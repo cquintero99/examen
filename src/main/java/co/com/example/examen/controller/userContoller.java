@@ -16,23 +16,34 @@ import co.com.example.examen.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
-public class userContoller {
+public class UserContoller {
 	@Autowired
 	UserRepository userRepository;
 	
-	@GetMapping
+	@GetMapping("/lista")
 	public List<User>lista(){
 		return userRepository.findAll();
 	}
+	
 	@GetMapping("/{user}/bills")
-	public List<Bill> listaMovimientos(@RequestBody User user ){
-		Optional<User>userCurrent=userRepository.findById(user.getId());
+	public List<Bill> listaMovimientos(@RequestBody String user ){
+		Optional<User>userCurrent=userRepository.findByUsername(user);
 		if(userCurrent.isPresent()) {
 			return userCurrent.get().getMovimientos();
 		}
 		return null;
 		
 	}
+	@GetMapping("/{user}/bills/{bill_id}")
+	public Bill findById(@PathVariable String user, @PathVariable Integer bill_id) {
+		Optional<User>userCurrent=userRepository.findByUsername(user);
+		if(userCurrent.isPresent()) {
+			BillController controller=new BillController();
+			return controller.getById(bill_id);
+		}
+		return null;
+	}
+	
 	
 
 }
