@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import co.com.example.examen.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin
 public class UserContoller {
 	@Autowired
 	UserRepository userRepository;
@@ -69,6 +71,19 @@ public class UserContoller {
 		return null;
 		
 	}
+	@GetMapping("/{user}/login/{pass}")
+		
+		public Boolean login(@PathVariable String user,@PathVariable String pass) {
+			Optional<User>userCurrent=userRepository.findByUsername(user);
+			if(userCurrent.isPresent()) {
+				if(userCurrent.get().getPass().equals(pass)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	
+	
 	
 	
 

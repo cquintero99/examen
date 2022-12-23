@@ -22,6 +22,7 @@ public class Bill implements Serializable{
 	private Date date_bill;
 	private Integer user_id;
 	private Integer value;
+	private Integer type;
 	private String observation;
 
 }
