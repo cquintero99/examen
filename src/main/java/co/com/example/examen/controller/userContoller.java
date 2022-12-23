@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.com.example.examen.entities.Bill;
 import co.com.example.examen.entities.User;
+import co.com.example.examen.repository.BillRepository;
 import co.com.example.examen.repository.UserRepository;
 
 @RestController
@@ -19,6 +20,8 @@ import co.com.example.examen.repository.UserRepository;
 public class UserContoller {
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	BillRepository billRepository;
 	
 	@GetMapping("/lista")
 	public List<User>lista(){
@@ -26,8 +29,10 @@ public class UserContoller {
 	}
 	
 	@GetMapping("/{user}/bills")
-	public List<Bill> listaMovimientos(@RequestBody String user ){
+	public List<Bill> listaMovimientos(@PathVariable String user ){
+		
 		Optional<User>userCurrent=userRepository.findByUsername(user);
+		
 		if(userCurrent.isPresent()) {
 			return userCurrent.get().getMovimientos();
 		}
@@ -35,14 +40,15 @@ public class UserContoller {
 		
 	}
 	@GetMapping("/{user}/bills/{bill_id}")
-	public Bill findById(@PathVariable String user, @PathVariable Integer bill_id) {
+	public Optional<Bill> findById(@PathVariable String user, @PathVariable Integer bill_id) {
 		Optional<User>userCurrent=userRepository.findByUsername(user);
 		if(userCurrent.isPresent()) {
-			BillController controller=new BillController();
-			return controller.getById(bill_id);
+			return billRepository.findById(bill_id);
+			
 		}
 		return null;
 	}
+	
 	
 	
 

@@ -27,9 +27,9 @@ public class User implements Serializable  {
 	private String pass;
 	private String email;
 	
-	@JsonIgnore
+	
 	@OneToMany(mappedBy="user_id")
-	private List<Bill>movimientos;
+	private List<Bill> movimientos;
 	
 
 }
