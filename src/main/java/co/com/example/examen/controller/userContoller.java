@@ -31,6 +31,14 @@ public class UserContoller {
 	public List<User>lista(){
 		return userRepository.findAll();
 	}
+	@GetMapping("/{user}/usuario")
+	public Optional<User> buscarUser(@PathVariable String user) {
+		Optional<User>userCurrent=userRepository.findByUsername(user);
+		if(userCurrent.isPresent()) {
+			return userCurrent;
+		}
+		return null;
+	}
 	
 	@GetMapping("/{user}/bills")
 	public List<Bill> listaMovimientos(@PathVariable String user ){
